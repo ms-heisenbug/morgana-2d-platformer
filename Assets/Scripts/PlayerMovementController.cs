@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System;
 using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
@@ -40,8 +41,14 @@ public class PlayerMovementController : MonoBehaviour
         if (controls.Move.Jump.triggered || controls.Move.DoubleJump.triggered)
         {
             Jump();
-            Debug.Log("Jump pressed");
         }
+
+        controls.Move.Slide.performed += _ => Slide();
+    }
+
+    private void Slide()
+    {
+        animator.SetTrigger("Sliding");
     }
 
     void FixedUpdate()

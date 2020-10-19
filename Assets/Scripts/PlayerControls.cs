@@ -41,6 +41,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Slide"",
+                    ""type"": ""Button"",
+                    ""id"": ""3cb22411-c6d5-40a8-a5bf-b3313de66b39"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -98,6 +106,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""DoubleJump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29f30d04-70bb-46e8-9919-472286fd41cf"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Slide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -109,6 +128,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Move_Sideways = m_Move.FindAction("Sideways", throwIfNotFound: true);
         m_Move_Jump = m_Move.FindAction("Jump", throwIfNotFound: true);
         m_Move_DoubleJump = m_Move.FindAction("DoubleJump", throwIfNotFound: true);
+        m_Move_Slide = m_Move.FindAction("Slide", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,6 +181,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Move_Sideways;
     private readonly InputAction m_Move_Jump;
     private readonly InputAction m_Move_DoubleJump;
+    private readonly InputAction m_Move_Slide;
     public struct MoveActions
     {
         private @PlayerControls m_Wrapper;
@@ -168,6 +189,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Sideways => m_Wrapper.m_Move_Sideways;
         public InputAction @Jump => m_Wrapper.m_Move_Jump;
         public InputAction @DoubleJump => m_Wrapper.m_Move_DoubleJump;
+        public InputAction @Slide => m_Wrapper.m_Move_Slide;
         public InputActionMap Get() { return m_Wrapper.m_Move; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -186,6 +208,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @DoubleJump.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnDoubleJump;
                 @DoubleJump.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnDoubleJump;
                 @DoubleJump.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnDoubleJump;
+                @Slide.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnSlide;
+                @Slide.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnSlide;
+                @Slide.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnSlide;
             }
             m_Wrapper.m_MoveActionsCallbackInterface = instance;
             if (instance != null)
@@ -199,6 +224,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @DoubleJump.started += instance.OnDoubleJump;
                 @DoubleJump.performed += instance.OnDoubleJump;
                 @DoubleJump.canceled += instance.OnDoubleJump;
+                @Slide.started += instance.OnSlide;
+                @Slide.performed += instance.OnSlide;
+                @Slide.canceled += instance.OnSlide;
             }
         }
     }
@@ -208,5 +236,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnSideways(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDoubleJump(InputAction.CallbackContext context);
+        void OnSlide(InputAction.CallbackContext context);
     }
 }
