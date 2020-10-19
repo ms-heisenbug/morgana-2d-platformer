@@ -44,6 +44,12 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         controls.Move.Slide.performed += _ => Slide();
+        controls.Move.Crouch.performed += _ => Crouch();
+    }
+
+    private void Crouch()
+    {
+        animator.SetTrigger("Crouching");
     }
 
     private void Slide()

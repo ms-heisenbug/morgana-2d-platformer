@@ -49,6 +49,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""30ee4667-b455-4f0b-901f-5552a66e14fc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -117,6 +125,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Slide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98a08097-c307-4aec-88e1-c969bd482b0f"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -129,6 +148,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Move_Jump = m_Move.FindAction("Jump", throwIfNotFound: true);
         m_Move_DoubleJump = m_Move.FindAction("DoubleJump", throwIfNotFound: true);
         m_Move_Slide = m_Move.FindAction("Slide", throwIfNotFound: true);
+        m_Move_Crouch = m_Move.FindAction("Crouch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -182,6 +202,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Move_Jump;
     private readonly InputAction m_Move_DoubleJump;
     private readonly InputAction m_Move_Slide;
+    private readonly InputAction m_Move_Crouch;
     public struct MoveActions
     {
         private @PlayerControls m_Wrapper;
@@ -190,6 +211,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Move_Jump;
         public InputAction @DoubleJump => m_Wrapper.m_Move_DoubleJump;
         public InputAction @Slide => m_Wrapper.m_Move_Slide;
+        public InputAction @Crouch => m_Wrapper.m_Move_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_Move; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -211,6 +233,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Slide.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnSlide;
                 @Slide.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnSlide;
                 @Slide.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnSlide;
+                @Crouch.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_MoveActionsCallbackInterface = instance;
             if (instance != null)
@@ -227,6 +252,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Slide.started += instance.OnSlide;
                 @Slide.performed += instance.OnSlide;
                 @Slide.canceled += instance.OnSlide;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -237,5 +265,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnDoubleJump(InputAction.CallbackContext context);
         void OnSlide(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
 }
